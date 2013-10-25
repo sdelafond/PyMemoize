@@ -1,74 +1,22 @@
 from .common import *
 
 
-class TestMain(TestCase):
+class TestDecorated(TestCase):
 
-    def test_manual_get(self):
+    def test_error_escapes(self):
 
-        store = {}
-        records = []
-        memo = Memoizer(store)
-
-        def func(*args, **kwargs):
-            records.append((args, kwargs))
-            return len(records)
-
-        # Only should get called once.
-        self.assertEqual(memo.get('key', func), 1)
-        self.assertEqual(memo.get('key', func), 1)
-
-        # Keys should expire.
-        self.assertEqual(memo.get('expires', func, max_age=1), 2)
-        self.assertEqual(memo.get('expires', func, max_age=1), 2)
-
-        self.assertTrue(memo.exists('expires'))
-        sleep(2)
-        self.assertFalse(memo.exists('expires'))
-
-        self.assertEqual(memo.get('expires', func, max_age=1), 3)
-
-    def test_dynamic_maxage(self):
-
-
-        store = {}
-        memo = Memoizer(store)
-
-        def func():
-            func.count += 1
-            return func.count
-
-        func.count = 0
-
-        self.assertEqual(memo.get('key', func, max_age=1), 1)
-        self.assertEqual(memo.get('key', func, max_age=1), 1)
-
-        # This will not recalculate as 1 second has not passed.
-        self.assertEqual(memo.get('key', func, max_age=1), 1)
-
-        sleep(2)
-
-        # This should recalculate.
-        self.assertEqual(memo.get('key', func, max_age=1), 2)
-
-    def test_exceptions(self):
-
-        store = {}
-        memo = Memoizer(store)
-
-        @memo
+        @self.memo
         def raises_value_error(message='default'):
             raise ValueError(message)
 
         self.assertRaises(ValueError, raises_value_error, 'x')
-        self.assertFalse(store)
+        self.assertFalse(self.store)
 
+    def test_memo_basics(self):
 
-    def test_decorator(self):
-        store = {}
         record = []
-        memo = Memoizer(store)
 
-        @memo
+        @self.memo
         def func_1(arg=1):
             record.append(arg)
             return arg
@@ -79,7 +27,6 @@ class TestMain(TestCase):
         assert len(record) == 1
         assert func_1(2) == 2
         assert len(record) == 2
-
 
     def test_region(self):
         store_a = {}
@@ -206,36 +153,12 @@ class TestMain(TestCase):
 
         f(1, 2, 3)
         self.assertEqual(stack, [
-            ('lock', 'tests.test_main.f(1, 2, 3)'),
+            ('lock', 'tests.test_func.f(1, 2, 3)'),
             ('call', (1, 2, 3), {}),
-            ('unlk', 'tests.test_main.f(1, 2, 3)'),
+            ('unlk', 'tests.test_func.f(1, 2, 3)'),
         ])
 
-
-    def test_etag(self):
-
-        store = {}
-        memo = Memoizer(store)
-
-        def func():
-            func.count += 1
-            return func.count
-        func.count = 0
-
-        assert memo.get('key', func) == 1
-        assert memo.etag('key') is None
-
-        assert memo.get('key', func, etag='a') == 2
-        assert memo.etag('key') == 'a'
-
-        assert memo.get('key', func, etag='b') == 3
-        assert memo.etag('key') == 'b'
-
-        # It does not go up here.
-        assert memo.get('key', func) == 3
-
-
-    def test_etagger(self):
+    def test_dynamic_etag(self):
 
         store = {}
         memo = Memoizer(store)
@@ -244,7 +167,7 @@ class TestMain(TestCase):
         def etagger():
             return len(state)
 
-        @memo(etagger=etagger)
+        @memo(etag=etagger)
         def state_sum():
             state_sum.count += 1
             return sum(state, 0)
@@ -258,7 +181,6 @@ class TestMain(TestCase):
 
         assert state_sum() == 6
         assert state_sum.count == 2
-
 
 
     def test_method_decorator(self):

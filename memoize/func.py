@@ -1,6 +1,13 @@
 import inspect
 
+from .options import OptionProperty
+
+
 class MemoizedFunction(object):
+
+    etag = OptionProperty('etag')
+    max_age = OptionProperty('max_age')
+    expiry = OptionProperty('expiry')
 
     def __init__(self, cache, func, master_key, opts, args=None, kwargs=None):
         self.cache = cache
@@ -106,7 +113,8 @@ class MemoizedFunction(object):
         self._expand_opts(opts)
         return self.cache.exists(self.key(args, kwargs))
 
-    def etag(self, args=(), kwargs=None, **opts):
+    def last_etag(self, args=(), kwargs=None, **opts):
         args, kwargs = self._expand_args(args, kwargs)
         self._expand_opts(opts)
         return self.cache.etag(self.key(args, kwargs))
+    
