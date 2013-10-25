@@ -1,4 +1,3 @@
-from memoize.core import *
 from .common import *
 
 
@@ -23,7 +22,7 @@ class TestMain(TestCase):
         self.assertEqual(memo.get('expires', func, max_age=60), 2)
 
         self.assertTrue(memo.exists('expires'))
-        time.sleep(120)
+        sleep(120)
         self.assertFalse(memo.exists('expires'))
 
         self.assertEqual(memo.get('expires', func, max_age=60), 3)
@@ -46,7 +45,7 @@ class TestMain(TestCase):
         # This will not recalculate as 1 second has not passed.
         self.assertEqual(memo.get('key', func, max_age=60), 1)
 
-        time.sleep(120)
+        sleep(120)
 
         # This should recalculate.
         self.assertEqual(memo.get('key', func, max_age=60), 2)
