@@ -1,5 +1,5 @@
-import time
 import inspect
+from time import time
 
 
 DEFAULT_TIMEOUT = 10
@@ -43,7 +43,7 @@ class Memoizer(object):
         protocol, creation, old_expiry, old_etag, value = data
         assert protocol == CURRENT_PROTOCOL_VERSION, 'wrong protocol version: %r' % protocol
 
-        current_time = time.time()
+        current_time = time()
 
         # This one is obvious...
         if old_expiry and old_expiry < current_time:
@@ -116,7 +116,7 @@ class Memoizer(object):
             if locked:
                 lock.release()
 
-        creation = time.time()
+        creation = time()
         expiry = opts.get('expiry')
         max_age = opts.get('max_age')
         if max_age is not None:
@@ -149,7 +149,7 @@ class Memoizer(object):
 
     def expire(self, key, max_age, **opts):
         """Set the maximum age of a given key, in seconds."""
-        self.expire_at(key, time.time() + max_age, **opts)
+        self.expire_at(key, time() + max_age, **opts)
 
     def ttl(self, key, **opts):
         """Get the time-to-live of a given key; None if not set."""
@@ -161,7 +161,7 @@ class Memoizer(object):
             return None
         expiry = data[EXPIRY_INDEX]
         if expiry is not None:
-            return max(0, expiry - time.time()) or None
+            return max(0, expiry - time()) or None
 
     def etag(self, key, **opts):
         key, store = self._expand_opts(key, opts)
