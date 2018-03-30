@@ -1,0 +1,19 @@
+Source: python-memoize
+Maintainer: Sebastien Delafond <seb@debian.org>
+Section: python
+Priority: optional
+Build-Depends: dh-python, python3-setuptools, python3-all, debhelper (>= 9)
+Standards-Version: 4.1.3
+Homepage: https://github.com/mikeboers/PyMemoize
+
+Package: python3-memoize
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends}
+Description: Simple Python cache and memoizing module (Python3)
+ This is a (relatively) simple Python memoizing module (ie. a function
+ cache), in which any dict-like can be used as the actual storage
+ object.
+ .
+ This is the Python3 package.
+
+

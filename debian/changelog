@@ -1,0 +1,5 @@
+python-memoize (1.0.2-1) unstable; urgency=low
+
+  * First upload (Closes: #894431)
+
+ -- Sebastien Delafond <seb@debian.org>  Fri, 30 Mar 2018 10:28:54 +0200
