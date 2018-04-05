@@ -1,3 +1,10 @@
+python-memoize (1.0.2-2) unstable; urgency=medium
+
+  * Add Vcs-* fields
+  * Conflict on python3-django-memoize (Closes: #894912)
+
+ -- Sebastien Delafond <seb@debian.org>  Thu, 05 Apr 2018 15:28:44 +0200
+
 python-memoize (1.0.2-1) unstable; urgency=low
 
   * First upload (Closes: #894431)
