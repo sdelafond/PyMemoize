@@ -11,6 +11,7 @@ Vcs-Browser: https://salsa.debian.org/debian/python-memoize
 Package: python3-memoize
 Architecture: all
 Depends: ${misc:Depends}, ${python3:Depends}
+Conflicts: python3-django-memoize
 Description: Simple Python cache and memoizing module (Python3)
  This is a (relatively) simple Python memoizing module (ie. a function
  cache), in which any dict-like can be used as the actual storage
