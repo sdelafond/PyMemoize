@@ -1,8 +1,9 @@
 python-memoize (1.0.3-1) unstable; urgency=medium
 
   * New upstream version 1.0.3
+  * Bump up Standards-Version
 
- -- Sebastien Delafond <seb@debian.org>  Sat, 21 Dec 2019 10:08:54 +0100
+ -- Sebastien Delafond <seb@debian.org>  Sat, 21 Dec 2019 10:11:27 +0100
 
 python-memoize (1.0.2-2) unstable; urgency=medium
 
