@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: PyMemoize
-Version: 1.0.2
+Version: 1.0.3
 Summary: Simple memoizing module.
 Home-page: http://github.com/mikeboers/PyMemoize
 Author: Mike Boers
